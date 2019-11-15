@@ -9,6 +9,8 @@ private:
 	sf::Vector2f position;
 	float size;
 	sf::Color color;
+
+	sf::Vector2f speed = { -1, 1};
 	sf::CircleShape circle;
 
 public:
@@ -17,13 +19,17 @@ public:
 
 	virtual void draw( sf::RenderWindow & window ) override;
 
-
+	virtual void update() override;
 
 	void move( sf::Vector2f delta );
 
-	bool intersects( sf::FloatRect& object) const{
-		return circle.getGlobalBounds().intersects(object);
-	}
+	bool intersects( const sf::FloatRect& object) const;
+
+	void newDirection( sf::Vector2f delta );
+
+	bool within( int x, int a, int b );
+
+	sf::Vector2f overlaps( const sf::FloatRect other );
 };
 
 #endif
