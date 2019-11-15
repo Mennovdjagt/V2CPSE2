@@ -5,16 +5,17 @@
 #include "drawable.hpp"
 
 class wall : public drawable {
-public:
-
-	wall( sf::Vector2f position, sf::Vector2f size, float thick, sf::Color color = {255, 0, 0} );
-
-	void draw( sf::RenderWindow & window ) const;
-
 private:
 	sf::Vector2f size;
 	float thick;
 	sf::Color color;
+
+public:
+
+	wall( sf::Vector2f position, sf::Vector2f size, float thick, sf::Color color = {255, 0, 0} );
+
+	virtual void draw( sf::RenderWindow & window ) override;
+
 };
 
 #endif

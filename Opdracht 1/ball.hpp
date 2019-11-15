@@ -5,20 +5,25 @@
 #include "drawable.hpp"
 
 class ball : public drawable {
+private:
+	sf::Vector2f position;
+	float size;
+	sf::Color color;
+	sf::CircleShape circle;
+
 public:
 
 	ball( sf::Vector2f position, float size = 30.0, sf::Color color = {50, 50, 150} );
 
-	void draw( sf::RenderWindow & window ) const;
+	virtual void draw( sf::RenderWindow & window ) override;
+
+
 
 	void move( sf::Vector2f delta );
 
-	void jump( sf::Vector2f target );
-	void jump( sf::Vector2i target );
-
-private:
-	float size;
-	sf::Color color;
+	bool intersects( sf::FloatRect& object) const{
+		return circle.getGlobalBounds().intersects(object);
+	}
 };
 
 #endif

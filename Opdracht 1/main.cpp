@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "ball.hpp"
 #include "block.hpp"
-#include "wall.hpp"
+//#include "wall.hpp"
 #include <array>
 #include "drawable.hpp"
 
@@ -39,6 +39,15 @@ public:
 		work(work)
 	{}
 
+	action(
+		std::function< void() > work
+	) :
+		condition(
+			[]()->bool { return 1; }
+		),
+		work(work)
+	{}
+
 	void operator()(){
 		if( condition() ){
 			work();
@@ -61,11 +70,11 @@ int main( int argc, char *argv[] ){
 	std::array< drawable *, 6 > objects = { &my_ball, &my_block, &left, &right, &up, &down };
 
 	action actions[] = {
-		action( sf::Keyboard::Left,  [&](){ my_block.move( sf::Vector2f( -1.0,  0.0 )); }),
-		action( sf::Keyboard::Right, [&](){ my_block.move( sf::Vector2f( +1.0,  0.0 )); }),
-		action( sf::Keyboard::Up,    [&](){ my_block.move( sf::Vector2f(  0.0, -1.0 )); }),
-		action( sf::Keyboard::Down,  [&](){ my_block.move( sf::Vector2f(  0.0, +1.0 )); }),
-		action( sf::Mouse::Left,     [&](){ my_ball.jump( sf::Mouse::getPosition( window )); })
+		action( sf::Keyboard::Left,  	[&](){ my_block.move( sf::Vector2f( -1.0,  0.0 )); }),
+		action( sf::Keyboard::Right, 	[&](){ my_block.move( sf::Vector2f( +1.0,  0.0 )); }),
+		action( sf::Keyboard::Up,    	[&](){ my_block.move( sf::Vector2f(  0.0, -1.0 )); }),
+		action( sf::Keyboard::Down,  	[&](){ my_block.move( sf::Vector2f(  0.0, +1.0 )); }),
+		action([&](){ my_ball.move( sf::Vector2f(  +1.0, 0.0 )); })
 	};
 
 	while (window.isOpen()) {
@@ -80,6 +89,9 @@ int main( int argc, char *argv[] ){
       }
 
 		window.display();
+
+		//std::cout << my_block.getGlobalBounds().intersects(right.getGlobalBounds()) << std::endl;
+		//std::cout << my_block.getGlobalBounds() << std::endl;
 
 		sf::sleep( sf::milliseconds( 20 ));
 

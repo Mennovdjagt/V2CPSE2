@@ -5,15 +5,17 @@
 
 class drawable {
 protected:
-	sf::Vector2f position;
+	//sf::Vector2f position;
 
 public:
 
-	drawable(sf::Vector2f position):
-		position{ position }
-	{}
+	//drawable(sf::Vector2f position):
+	//	position{ position }
+	//{}
 
-	virtual void draw( sf::RenderWindow & window ) const = 0;
+	virtual void draw( sf::RenderWindow & window ) = 0;
+
+	virtual void update(){}
 	
 };
 
