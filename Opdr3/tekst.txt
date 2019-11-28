@@ -1,2 +1,5 @@
-(50,60) CIRCLE blue 10(10,10) 
-RECTANGLE red (30,40)(110, 50) 
+(50,60) CIRCLE blue 10
+(10,10) RECTANGLE red (30,40)
+(110, 50) PICTURE bird.jpg 
+(10,10) RECTANGLE red (30,40)
+(10,10) RECTANGLE red (30,40)
