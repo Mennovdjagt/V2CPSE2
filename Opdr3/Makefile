@@ -12,7 +12,7 @@
 SOURCES := rectangle.cpp
 
 # header files in this project
-HEADERS := rectangle.hpp factory.hpp
+HEADERS := rectangle.hpp action.hpp
 
 # other places to look for files for this project
 SEARCH  := 

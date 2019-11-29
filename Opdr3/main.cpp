@@ -1,59 +1,59 @@
 #include <iostream>
 #include <functional>
+#include <array>
+#include <fstream>
+#include <string>
+#include <exception>
+
 #include <SFML/Graphics.hpp>
 //#include "ball.hpp"
 #include "rectangle.hpp"
-#include <array>
 #include "drawable.hpp"
-#include "factory.hpp"
+#include "action.hpp"
 
-class action {
-private:
-	std::function< bool() > condition;
-	std::function< void() > work;
-public:
-	action(
-	   std::function< bool() > condition, 
-	   std::function< void() > work
-	) : condition( condition ), 
-		work( work ) 
-	{}
 
-	action(
-		sf::Keyboard::Key key,
-		std::function< void() > work
-	) :
-		condition(
-			[ key ]()->bool { return sf::Keyboard::isKeyPressed( key ); }
-		),
-		work(work)
-	{}
+std::istream & operator>>( std::istream & input, sf::Color & rhs ){
+	std::string s;
+   	input >> s;
+   	const struct { const char * name; sf::Color color; } colors[]{
+       	{ "yellow", sf::Color::Yellow },
+       	{ "red",    sf::Color::Red },
+       	{ "blue",	sf::Color::Blue }
+    
+   	};
+   	for( auto const & color : colors ){
+       	if( color.name == s ){ 
+          	rhs = color.color;
+          	return input;
+       	}
+   	}
+   		/*if( s == "" ){
+      		throw end_of_file();
+   		}
+   		throw unknown_color( s );*/
+   		
+   	rhs = sf::Color::Yellow;
+   	return input;
+}
 
-	action(
-		sf::Mouse::Button button,
-		std::function< void() > work
-	) :
-		condition(
-			[ button ]()->bool { return sf::Mouse::isButtonPressed( button ); }
-		),
-		work(work)
-	{}
 
-	action(
-		std::function< void() > work
-	) :
-		condition(
-			[]()->bool { return 1; }
-		),
-		work(work)
-	{}
-
-	void operator()(){
-		if( condition() ){
-			work();
+void read(){
+	std::string position;
+	std::string name;
+	sf::Color color;
+	std::string size;
+	
+	std::ifstream myfile("tekst.txt");
+	if(myfile.is_open()){
+		while(myfile >> position >> name >> color >> size){
+			std::cout << position << ", " << name << ", " << size << std::endl;
+			std::cout << "hello" << std::endl;
 		}
+		myfile.close();
 	}
-};
+
+}
+
 
 int main( int argc, char *argv[] ){
 	std::cout << "Starting application 01-05 array of actions\n";
@@ -71,8 +71,8 @@ int main( int argc, char *argv[] ){
 		action( sf::Keyboard::Down,  	[&](){ my_block.move( sf::Vector2f(  0.0, +3.0 )); }),
 	};
 
-	factory no_name("tekst.txt");
-	no_name.read();
+	//std::string location = "tekst.txt";
+	read();
 
 
 	while (window.isOpen()) {

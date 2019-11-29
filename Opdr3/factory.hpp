@@ -17,14 +17,14 @@ public:
 		location{ location }
 	{}
 
+	friend std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs );
+
 	void read(){
 		std::string position;
 		std::string name;
-		std::string color;
+		sf::Color color;
 		std::string size;
 	
-
-		//std::string line;
 		std::ifstream myfile(location);
 		if(myfile.is_open()){
 			while(myfile >> position >> name >> color >> size){
@@ -35,12 +35,12 @@ public:
 		}
 	}
 
-	friend std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs );
-	friend std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs );
+	//friend std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs );
+	//friend std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs );
 	
 };
 
-std::ifstream & operator>>( std::ifstream & input, sf::Color& rhs ){
+std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs ){
 	std::string s;
    	input >> s;
    	const struct { const char * name; sf::Color color; } colors[]{
@@ -60,10 +60,11 @@ std::ifstream & operator>>( std::ifstream & input, sf::Color& rhs ){
    		}
    		throw unknown_color( s );
    		*/
+   	rhs = sf::Color::Yellow;
    	return input;
 }
 
-std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs ){
+/*std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs ){
    	char c;
    	//if( ! ( input >> c )){ throw end_of_file(); }
    	//if( c != '(' ){ throw invalid_position( c ); }
@@ -79,7 +80,7 @@ std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs ){
    	return input;
 }
 
-/*class unknown_color : public std::exception {
+class unknown_color : public std::exception {
 public:
    unknown_color( const std::string & name  ):
        s{ std::string{ "unknown colcor [" } + name + "]" }
