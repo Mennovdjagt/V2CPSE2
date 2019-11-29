@@ -6,10 +6,48 @@
 #include <exception>
 
 #include <SFML/Graphics.hpp>
-//#include "ball.hpp"
 #include "rectangle.hpp"
 #include "drawable.hpp"
 #include "action.hpp"
+
+class unknown_color : public std::exception {
+public:
+   unknown_color( const std::string & name  ):
+       s{ std::string{ "unknown colcor [" } + name + "]" }
+   {}
+   virtual const char * what() const throw(){
+      return s.c_str();
+   }
+private:
+   std::string s;
+};
+
+
+class end_of_file : public std::exception {
+public:
+	end_of_file( ){}
+
+	virtual const char * what() const throw(){
+      return "end of file";
+   }
+
+private:
+};
+
+
+class invalid_position : public std::exception {
+public:
+	invalid_position(char name):
+		s( name )
+	{}
+
+	virtual const char * what() const throw(){
+      return "shit";
+   }
+
+private:
+	char s;
+};
 
 
 std::istream & operator>>( std::istream & input, sf::Color & rhs ){
@@ -27,18 +65,32 @@ std::istream & operator>>( std::istream & input, sf::Color & rhs ){
           	return input;
        	}
    	}
-   		/*if( s == "" ){
+   		if( s == "" ){
       		throw end_of_file();
    		}
-   		throw unknown_color( s );*/
-   		
-   	rhs = sf::Color::Yellow;
+   		throw unknown_color( s );
+}
+
+
+std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
+   	char c;
+   	if( ! ( input >> c )){ throw end_of_file(); }
+   	if( c != '(' ){ throw invalid_position( c ); }
+
+   	if( ! ( input >> rhs.x )){ }
+
+   	if( ! ( input >> c )){ }
+   	if( ! ( input >> rhs.y )){ }
+
+   	if( ! ( input >> c )){ }
+   	//if( c != ')' ){ throw invalid_position( c ); }
+
    	return input;
 }
 
 
 void read(){
-	std::string position;
+	sf::Vector2f position;
 	std::string name;
 	sf::Color color;
 	std::string size;
@@ -46,8 +98,7 @@ void read(){
 	std::ifstream myfile("tekst.txt");
 	if(myfile.is_open()){
 		while(myfile >> position >> name >> color >> size){
-			std::cout << position << ", " << name << ", " << size << std::endl;
-			std::cout << "hello" << std::endl;
+			std::cout << name << ", " << size << std::endl;
 		}
 		myfile.close();
 	}
