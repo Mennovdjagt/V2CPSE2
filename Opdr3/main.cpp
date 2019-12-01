@@ -9,8 +9,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "rectangle.hpp"
+#include "circle.hpp"
 #include "drawable.hpp"
 #include "action.hpp"
+#include "image.hpp"
 
 
 class unknown_color : public std::exception {
@@ -104,25 +106,28 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	if( c != ')' ){ throw invalid_position( c ); }
 
    	return input;
-
 }
-
 
 drawable* read( std::ifstream & input ){
 	sf::Vector2f position;
 	std::string name;
 	sf::Color color;
-	std::string size;
+	sf::Vector2f size;
+	std::string sizef;
+	std::string pic;
 	
-	input >> position >> name >> color >> size;
-	std::cout << "(" << position.x << "," << position.y << "), " << name << ", " << size << std::endl;
-	/*if( name == "CIRCLE" ){
-     	return new circle( );
-	}*/
+	input >> position >> name;
+
+	if( name == "CIRCLE" ){
+		input >> color >> sizef;
+     	return new circle( position, std::stof(sizef), color );
+	}
    	if( name == "RECTANGLE" ){
-      	return new rectangle(position, sf::Vector2f(10, 10), color);
-   	/*} else if( name == "PICTURE" ){
-      	return new picture(  );*/
+   		input >> color >> size;
+      	return new rectangle( position, size, color );
+   	} else if( name == "PICTURE" ){
+   		input >> pic;
+      	return new image( pic, position );
 
    	} else if( name == "" ){
       	throw end_of_file();
@@ -155,7 +160,6 @@ int main( int argc, char *argv[] ){
 		try{
 			for(;;){
 				object.push_back(read( input ));
-				std::cout << "hoi" << std::endl;
 			}
 		}catch( std::exception & e ){
 			std::cout << e.what();
