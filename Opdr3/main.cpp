@@ -107,33 +107,27 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
 }
 
 
-std::unique_ptr<drawable> read(){
+drawable* read( std::ifstream & input ){
 	sf::Vector2f position;
 	std::string name;
 	sf::Color color;
 	std::string size;
 	
-	std::ifstream myfile("tekst.txt");
-	if(myfile.is_open()){
-		while(myfile >> position >> name >> color >> size){
-			std::cout << "(" << position.x << "," << position.y << "), " << name << ", " << size << std::endl;
-			//if( name == "CIRCLE" ){
-      		//	return new circle( );
-			//}
-   			if( name == "RECTANGLE" ){
-      			return std::unique_ptr<drawable> (new rectangle( ));
-   			/*} else if( name == "PICTURE" ){
-      			return new picture(  );*/
+	input >> position >> name >> color >> size;
+	std::cout << "(" << position.x << "," << position.y << "), " << name << ", " << size << std::endl;
+	/*if( name == "CIRCLE" ){
+     	return new circle( );
+	}*/
+   	if( name == "RECTANGLE" ){
+      	return new rectangle(position, sf::Vector2f(10, 10), color);
+   	/*} else if( name == "PICTURE" ){
+      	return new picture(  );*/
 
-   			} else if( name == "" ){
-      			throw end_of_file();
-   }
+   	} else if( name == "" ){
+      	throw end_of_file();
+    }
 
    throw unknown_shape( name );
-		}
-		myfile.close();
-	}
-
 }
 
 
@@ -153,11 +147,15 @@ int main( int argc, char *argv[] ){
 		action( sf::Keyboard::Down,  	[&](){ my_block.move( sf::Vector2f(  0.0, +3.0 )); }),
 	};
 
-	//std::string location = "tekst.txt";
-	try{
-		read();
-	}catch( const std::exception & e ){
-		std::cerr << e.what();
+	{
+		std::ifstream input( "tekst.txt" );
+		try{
+			for(;;){
+				read( input );
+			}
+		}catch( std::exception & e ){
+			std::cout << e.what();
+		}
 	}
 
 
