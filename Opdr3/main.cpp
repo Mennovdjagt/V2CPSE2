@@ -5,6 +5,7 @@
 #include <string>
 #include <exception>
 #include <memory>
+#include <vector>
 
 #include <SFML/Graphics.hpp>
 #include "rectangle.hpp"
@@ -147,11 +148,14 @@ int main( int argc, char *argv[] ){
 		action( sf::Keyboard::Down,  	[&](){ my_block.move( sf::Vector2f(  0.0, +3.0 )); }),
 	};
 
+	std::vector<drawable *> object;
+
 	{
 		std::ifstream input( "tekst.txt" );
 		try{
 			for(;;){
-				read( input );
+				object.push_back(read( input ));
+				std::cout << "hoi" << std::endl;
 			}
 		}catch( std::exception & e ){
 			std::cout << e.what();
@@ -168,6 +172,10 @@ int main( int argc, char *argv[] ){
 
 		for( auto & p : objects ){
          p->draw( window );
+
+         for( auto & p : object ){
+         p->draw( window );
+     	 }
       }
 
 		window.display();
