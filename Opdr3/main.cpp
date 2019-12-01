@@ -4,18 +4,20 @@
 #include <fstream>
 #include <string>
 #include <exception>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 #include "rectangle.hpp"
 #include "drawable.hpp"
 #include "action.hpp"
 
+
 class unknown_color : public std::exception {
 public:
    unknown_color( const std::string & name  ):
        s{ std::string{ "unknown colcor [" } + name + "]" }
    {}
-   virtual const char * what() const throw(){
+   const char * what() const noexcept {
       return s.c_str();
    }
 private:
@@ -27,7 +29,7 @@ class end_of_file : public std::exception {
 public:
 	end_of_file( ){}
 
-	virtual const char * what() const throw(){
+	const char * what() const noexcept {
       return "end of file";
    }
 
@@ -37,16 +39,31 @@ private:
 
 class invalid_position : public std::exception {
 public:
-	invalid_position(char name):
-		s( name )
+	invalid_position( const char & c):
+		s{ std::string{ "invalid_position [" } + c + "]" }
 	{}
 
-	virtual const char * what() const throw(){
-      return "shit";
+	const char * what() const noexcept {
+      return s.c_str();
    }
 
 private:
-	char s;
+	std::string s;
+};
+
+
+class unknown_shape : public std::exception {
+public:
+	unknown_shape( const std::string & s ):
+		s{ std::string{ "unknown shape [" } + s + "]" }
+	{}
+
+	const char * what() const noexcept {
+      return s.c_str();
+   }
+
+private:
+	std::string s;
 };
 
 
@@ -83,13 +100,14 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	if( ! ( input >> rhs.y )){ }
 
    	if( ! ( input >> c )){ }
-   	//if( c != ')' ){ throw invalid_position( c ); }
+   	if( c != ')' ){ throw invalid_position( c ); }
 
    	return input;
+
 }
 
 
-void read(){
+std::unique_ptr<drawable> read(){
 	sf::Vector2f position;
 	std::string name;
 	sf::Color color;
@@ -98,7 +116,20 @@ void read(){
 	std::ifstream myfile("tekst.txt");
 	if(myfile.is_open()){
 		while(myfile >> position >> name >> color >> size){
-			std::cout << name << ", " << size << std::endl;
+			std::cout << "(" << position.x << "," << position.y << "), " << name << ", " << size << std::endl;
+			//if( name == "CIRCLE" ){
+      		//	return new circle( );
+			//}
+   			if( name == "RECTANGLE" ){
+      			return std::unique_ptr<drawable> (new rectangle( ));
+   			/*} else if( name == "PICTURE" ){
+      			return new picture(  );*/
+
+   			} else if( name == "" ){
+      			throw end_of_file();
+   }
+
+   throw unknown_shape( name );
 		}
 		myfile.close();
 	}
@@ -123,7 +154,11 @@ int main( int argc, char *argv[] ){
 	};
 
 	//std::string location = "tekst.txt";
-	read();
+	try{
+		read();
+	}catch( const std::exception & e ){
+		std::cerr << e.what();
+	}
 
 
 	while (window.isOpen()) {
