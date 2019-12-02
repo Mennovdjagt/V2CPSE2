@@ -14,3 +14,19 @@ void image::draw( sf::RenderWindow & window ) {
 	sprite.setPosition(position);
 	window.draw(sprite);
 }
+
+void image::move( sf::Vector2f delta ){
+	position += delta;
+}
+
+bool image::contains( const sf::Vector2f& object ) const {
+	return sprite.getGlobalBounds().contains( object );
+}
+
+sf::Vector2f image::getPosition() const {
+	return position;
+}
+
+std::string image::getPicture() const {
+	return picture;
+}

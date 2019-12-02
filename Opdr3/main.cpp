@@ -111,16 +111,16 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
 drawable* read( std::ifstream & input ){
 	sf::Vector2f position;
 	std::string name;
-	sf::Color color;
+	sf::Color color;					
 	sf::Vector2f size;
-	std::string sizef;
-	std::string pic;
+	std::string sizef;					//sizef is a string that will be converted to a float in circle
+	std::string pic;					//the location of the picture
 	
-	input >> position >> name;
+	input >> position >> name;			//only the first 2 are the same with circle's, rectangle's, picture's and line's
 
 	if( name == "CIRCLE" ){
 		input >> color >> sizef;
-     	return new circle( position, std::stof(sizef), color );
+     	return new circle( position, std::stof(sizef), color );		//std::stof(sizef) is a build in function from std::string to convert to a float
 	}
    	if( name == "RECTANGLE" ){
    		input >> color >> size;
@@ -136,22 +136,15 @@ drawable* read( std::ifstream & input ){
    throw unknown_shape( name );
 }
 
+void write( std::ofstream &, drawable* objects ){
+
+}
+
 
 int main( int argc, char *argv[] ){
 	std::cout << "Starting application 01-05 array of actions\n";
 
 	sf::RenderWindow window{ sf::VideoMode{ 640, 480 }, "SFML window" };
-
-	rectangle my_block{ 	sf::Vector2f{ 310.0, 230.0 }, 		sf::Vector2f{ 20.0, 20.0 }, sf::Color{255, 0, 0} };
-
-	std::array< drawable *, 1 > objects = { &my_block };
-
-	action actions[] = {
-		action( sf::Keyboard::Left,  	[&](){ my_block.move( sf::Vector2f( -3.0,  0.0 )); }),
-		action( sf::Keyboard::Right, 	[&](){ my_block.move( sf::Vector2f( +3.0,  0.0 )); }),
-		action( sf::Keyboard::Up,    	[&](){ my_block.move( sf::Vector2f(  0.0, -3.0 )); }),
-		action( sf::Keyboard::Down,  	[&](){ my_block.move( sf::Vector2f(  0.0, +3.0 )); }),
-	};
 
 	std::vector<drawable *> object;
 
@@ -166,6 +159,16 @@ int main( int argc, char *argv[] ){
 		}
 	}
 
+	int block = -1;
+	bool selected = 0;
+
+	action actions[] = {
+		action( sf::Keyboard::Left,  	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f( -1.0,  0.0 )); } }),
+		action( sf::Keyboard::Right, 	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f( +1.0,  0.0 )); } }),
+		action( sf::Keyboard::Up,    	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f(  0.0, -1.0 )); } }),
+		action( sf::Keyboard::Down,  	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f(  0.0, +1.0 )); } }),
+	};
+
 
 	while (window.isOpen()) {
 		for( auto & action : actions ){
@@ -174,13 +177,24 @@ int main( int argc, char *argv[] ){
 
 		window.clear();
 
-		for( auto & p : objects ){
-         p->draw( window );
+        int a = 0;
 
-         for( auto & p : object ){
-         p->draw( window );
-     	 }
-      }
+        for( auto & p : object ){
+         	p->draw(window);
+         	if(sf::Mouse::isButtonPressed( sf::Mouse::Left )){
+         		bool isPressed = p->contains( p->castToF( sf::Mouse::getPosition(window)));
+         		if(isPressed && !selected){
+         			selected = true;
+         			std::cout << isPressed << std::endl;
+         			block = a;
+         		}else if( !isPressed ){
+         			selected = false;
+         			std::cout << "missed" << std::endl;
+         			//block = -1;
+         		}
+         	}
+         	a++;
+     	}
 
 		window.display();
 

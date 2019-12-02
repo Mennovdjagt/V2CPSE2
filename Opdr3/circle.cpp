@@ -15,3 +15,23 @@ void circle::draw( sf::RenderWindow & window ) {
 	ball.setFillColor(color);
 	window.draw(ball);
 }
+
+void circle::move( sf::Vector2f delta ){
+	position += delta;
+}
+
+bool circle::contains( const sf::Vector2f& object ) const {
+	return ball.getGlobalBounds().contains( object );
+}
+
+sf::Vector2f circle::getPosition() const {
+	return position;
+}
+
+float circle::getSize() const {
+	return size;
+}
+
+sf::Color circle::getColor() const{
+	return color;
+}

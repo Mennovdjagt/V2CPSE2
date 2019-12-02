@@ -38,24 +38,24 @@ bool ball::within( int x, int a, int b ){
 
 sf::Vector2f ball::overlaps( const sf::FloatRect object ){
 
-   	if( position.x + 2 == object.left + object.width ){
-   		std::cout << "left" << std::endl;
-   		position.x += 2;
-   		return sf::Vector2f{ speed.x * -1, speed.y };
-   	}
-   	if( position.x + size + 2 == object.left + object.width - size){
+   	if( (object.left - position.x) <= 60 && (object.left - position.x) >= 50){
    		std::cout << "right" << std::endl;
-   		position.x -= 2;
+   		position.x -= 10;
    		return sf::Vector2f{ speed.x * -1, speed.y };
    	}
-   	if( position.y - 2 == object.top ){
-   		std::cout << "up" << std::endl;
-   		position.y += 2;
+   	else if( (object.left - position.x) >= -20 && (object.left - position.x) <= 0){
+   		std::cout << "left" << std::endl;
+   		position.x += 10;
+   		return sf::Vector2f{ speed.x * -1, speed.y };
+   	}
+   	else if( (object.top - position.y) <=60 && (object.top - position.y) >= 50 ){
+   		std::cout << "bottom" << std::endl;
+   		position.y -= 10;
    		return sf::Vector2f{ speed.x, speed.y * -1 };
    	}
-   	if( position.y + size - 2 == object.top - size){
-   		std::cout << "bottom" << std::endl;
-   		position.y -= 2;
+   	else if( (object.top - position.y) <= 0 ){
+   		std::cout << "up" << std::endl;
+   		position.y += 10;
    		return sf::Vector2f{ speed.x, speed.y * -1 };
    	}
 

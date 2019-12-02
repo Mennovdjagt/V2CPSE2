@@ -16,8 +16,12 @@ public:
 	rectangle( sf::Vector2f position, sf::Vector2f size, sf::Color color = {50, 150, 50} );
 
 	virtual void draw( sf::RenderWindow & window ) override;
+	virtual void move( sf::Vector2f delta ) override;
+	virtual bool contains( const sf::Vector2f& object ) const override;
+	sf::Vector2f getPosition() const;
+	sf::Vector2f getSize() const;
+	sf::Color getColor() const;
 
-	void move( sf::Vector2f delta );
 };
 
 #endif

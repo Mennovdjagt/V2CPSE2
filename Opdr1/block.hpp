@@ -13,15 +13,13 @@ private:
 
 public:
 
-	block( sf::Vector2f position, sf::Vector2f size, sf::Color color = {50, 150, 50} );
+	block( sf::Vector2f position, sf::Vector2f size = sf::Vector2f{ 30.0, 50.0 }, sf::Color color = { 50, 150, 50 } );
 
 	virtual void draw( sf::RenderWindow & window ) override;
 
 	void move( sf::Vector2f delta );
 
-	sf::FloatRect getGlobalBounds() const{
-		return rectangle.getGlobalBounds();
-	}
+	sf::FloatRect getGlobalBounds() const;
 };
 
 #endif

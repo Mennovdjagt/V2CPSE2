@@ -19,3 +19,6 @@ void block::move( sf::Vector2f delta ){
 	position += delta;
 }
 
+sf::FloatRect block::getGlobalBounds() const {
+	return rectangle.getGlobalBounds();
+}

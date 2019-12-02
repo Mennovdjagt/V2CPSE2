@@ -18,3 +18,19 @@ void rectangle::draw( sf::RenderWindow & window ) {
 void rectangle::move( sf::Vector2f delta ){
 	position += delta;
 }
+
+bool rectangle::contains( const sf::Vector2f& object ) const {
+	return block.getGlobalBounds().contains( object );
+}
+
+sf::Vector2f rectangle::getPosition() const {
+	return position;
+}
+
+sf::Vector2f rectangle::getSize() const {
+	return size;
+}
+
+sf::Color rectangle::getColor() const{
+	return color;
+}
