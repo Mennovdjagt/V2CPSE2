@@ -137,7 +137,7 @@ drawable* read( std::ifstream & input ){
 }
 
 void write( std::ofstream &, drawable* objects ){
-
+	//not done yet
 }
 
 
