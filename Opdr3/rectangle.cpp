@@ -23,6 +23,10 @@ bool rectangle::contains( const sf::Vector2f& object ) const {
 	return block.getGlobalBounds().contains( object );
 }
 
+void rectangle::newPosition( const sf::Vector2f newPos ){
+	position = (newPos - sf::Vector2f{size.x / 2, size.y / 2});
+}
+
 sf::Vector2f rectangle::getPosition() const {
 	return position;
 }

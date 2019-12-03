@@ -19,6 +19,7 @@ public:
 	virtual void draw( sf::RenderWindow & window ) override;
 	virtual void move( sf::Vector2f delta ) override;
 	virtual bool contains( const sf::Vector2f& object ) const override;
+	virtual void newPosition( const sf::Vector2f newPos ) override;
 	sf::Vector2f getPosition() const;
 	std::string getPicture() const;
 };

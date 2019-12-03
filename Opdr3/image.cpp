@@ -23,6 +23,11 @@ bool image::contains( const sf::Vector2f& object ) const {
 	return sprite.getGlobalBounds().contains( object );
 }
 
+void image::newPosition( const sf::Vector2f newPos ){
+	sf::Vector2f size = castToF(texture.getSize());
+	position = (newPos - sf::Vector2f(size.x/2, size.y/2));
+}
+
 sf::Vector2f image::getPosition() const {
 	return position;
 }

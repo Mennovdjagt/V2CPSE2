@@ -160,13 +160,14 @@ int main( int argc, char *argv[] ){
 	}
 
 	int block = -1;
-	bool selected = 0;
+	//bool selected = 0;
 
 	action actions[] = {
 		action( sf::Keyboard::Left,  	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f( -1.0,  0.0 )); } }),
 		action( sf::Keyboard::Right, 	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f( +1.0,  0.0 )); } }),
 		action( sf::Keyboard::Up,    	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f(  0.0, -1.0 )); } }),
 		action( sf::Keyboard::Down,  	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f(  0.0, +1.0 )); } }),
+    action( sf::Mouse::Left,      [&](){ for(auto & p : object){ if(p->contains( p->castToF( sf::Mouse::getPosition(window)))){ p->newPosition(p->castToF( sf::Mouse::getPosition(window))); } } }),
 	};
 
 
@@ -177,11 +178,11 @@ int main( int argc, char *argv[] ){
 
 		window.clear();
 
-        int a = 0;
+        //int a = 0;
 
         for( auto & p : object ){
          	p->draw(window);
-         	if(sf::Mouse::isButtonPressed( sf::Mouse::Left )){
+         	/*if(sf::Mouse::isButtonPressed( sf::Mouse::Left )){
          		bool isPressed = p->contains( p->castToF( sf::Mouse::getPosition(window)));
          		if(isPressed && !selected){
          			selected = true;
@@ -193,12 +194,12 @@ int main( int argc, char *argv[] ){
          			//block = -1;
          		}
          	}
-         	a++;
+         	a++;*/
      	}
 
 		window.display();
 
-		sf::sleep( sf::milliseconds( 10 ));
+		sf::sleep( sf::milliseconds( 1 ));
 
         sf::Event event;		
 	    while( window.pollEvent(event) ){

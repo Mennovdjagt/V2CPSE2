@@ -24,6 +24,10 @@ bool circle::contains( const sf::Vector2f& object ) const {
 	return ball.getGlobalBounds().contains( object );
 }
 
+void circle::newPosition( const sf::Vector2f newPos ){
+	position = (newPos - sf::Vector2f{size, size});
+}
+
 sf::Vector2f circle::getPosition() const {
 	return position;
 }

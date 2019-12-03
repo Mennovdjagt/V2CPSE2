@@ -10,9 +10,16 @@ public:
 	virtual void move ( sf::Vector2f delta );
 	virtual void update(){}
 	virtual bool contains( const sf::Vector2f& object ) const;
-	//virtual sf::Vector2f castToF( sf::Vector2i target );
+	virtual void newPosition( const sf::Vector2f newPos );
 
 	sf::Vector2f castToF( sf::Vector2i target ){
+	return sf::Vector2f(
+			static_cast<float>( target.x ),
+			static_cast<float>( target.y )
+		);
+	}
+
+	sf::Vector2f castToF( sf::Vector2u target ){
 	return sf::Vector2f(
 			static_cast<float>( target.x ),
 			static_cast<float>( target.y )
