@@ -60,7 +60,7 @@ int main( int argc, char *argv[] ){
 
 	sf::RenderWindow window{ sf::VideoMode{ 640, 480 }, "SFML window" };
 	ball  my_ball{ 	sf::Vector2f{ 500.0, 50.0 } };
-	block my_block{ sf::Vector2f{ 100.0, 200.0 } };
+	block my_block{ sf::Vector2f{ 100.0, 200.0 }, 	sf::Vector2f{50.0, 150.0} };
 	block left{ 	sf::Vector2f{ 0.0, 0.0 }, 		sf::Vector2f{ 10.0, 480.0 }, sf::Color{255, 0, 0} };
 	block right{ 	sf::Vector2f{ 630.0, 0.0 }, 	sf::Vector2f{ 10.0, 480.0 }, sf::Color{255, 0, 0} };
 	block up{ 		sf::Vector2f{ 0.0, 0.0 }, 		sf::Vector2f{ 640.0, 10.0 }, sf::Color{255, 0, 0} };
