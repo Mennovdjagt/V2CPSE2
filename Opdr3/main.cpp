@@ -70,26 +70,27 @@ private:
 };
 
 
-std::istream & operator>>( std::istream & output, sf::Color & rhs ){
-   	const struct { const char * name; sf::Color color; } colors[]{
-       	{ "yellow", sf::Color::Yellow },
-       	{ "red",    sf::Color::Red },
-       	{ "blue",	sf::Color::Blue }
-    
-   	};
-   	for( auto const & color : colors ){
-       	if( color.color == rhs ){ 
-          	output << color.name
-          	return output;
-       	}
-   	}
-   		if( s == "" ){
-      		throw end_of_file();
-   		}
-   		throw unknown_color( s );
+std::istream & operator>>( std::istream & input, sf::Color & rhs ){
+   std::string s;
+   input >> s;
+   const struct { const char * name; sf::Color color; } colors[]{
+       { "yellow", sf::Color::Yellow },
+       { "red",    sf::Color::Red },
+       { "blue",   sf::Color::Blue },
+   };
+   for( auto const & color : colors ){
+       if( color.name == s ){ 
+          rhs = color.color;
+          return input;
+       }
+   }
+   if( s == "" ){
+      throw end_of_file();
+   }
+   throw unknown_color( s );
 }
 
-std::istream & operator<<( std::istream & output, sf::Color & rhs ){
+std::ostream & operator<<( std::ostream & output, sf::Color rhs ){
     const struct { const char * name; sf::Color color; } colors[]{
         { "yellow", sf::Color::Yellow },
         { "red",    sf::Color::Red },
@@ -98,14 +99,11 @@ std::istream & operator<<( std::istream & output, sf::Color & rhs ){
     };
     for( auto const & color : colors ){
         if( color.color == rhs ){ 
-            rhs = color.color;
-            return input;
+            output << color.name;
+            return output;
         }
     }
-      if( s == "" ){
-          throw end_of_file();
-      }
-      throw unknown_color( s );
+    return output << "red";
 }
 
 std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
@@ -124,10 +122,11 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	return input;
 }
 
-std::istream & operator<<( std::istream & output, sf::Vector2f & rhs ){
-    output << "(" << rhs.x << "," << rhs.y << ") ";  
+std::ostream & operator<<( std::ostream & output, sf::Vector2f rhs ){
+  sf::Vector2f test = rhs;
+    output << "(" << test.x << "," << test.y << ") ";  
 
-    return input;
+    return output;
 }
 
 drawable* read( std::ifstream & input ){
@@ -160,7 +159,18 @@ drawable* read( std::ifstream & input ){
 
 void write( std::ofstream &output, std::vector<drawable *> objects ){
     for(auto &p : objects){
-        output << p->getPosition() << p->getType() << " " << p->getColor() << " " << p->getSize() << "\n";  
+      std::cout << p->getType() << std::endl;
+        output << p->getPosition() << p->getType() << " ";
+        std::string name = p->getType();
+        if( name == "CIRCLE" ){
+            output << p->getColor() << " " << (p->getSize()).x << "\n";  
+        }else if( name == "RECTANGLE" ){
+            output << p->getColor() << " " << p->getSize() <<"\n";  
+        }else if( name == "PICTURE" ){
+            output << p->getSize() << "\n";  
+        }else if( name == "" ){
+          throw end_of_file();
+        }
     }
 }
 

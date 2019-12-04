@@ -35,7 +35,7 @@ sf::Vector2f rectangle::getPosition() const {
 	return position;
 }
 
-sf::Vector2f rectangle::getSize() const {
+sf::Vector2f rectangle::getSize() {
 	return size;
 }
 

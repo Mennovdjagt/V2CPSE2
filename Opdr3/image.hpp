@@ -21,9 +21,11 @@ public:
 	virtual bool contains( const sf::Vector2f& object ) const override;
 	virtual void newPosition( const sf::Vector2f newPos ) override;
 	virtual std::string getType() const override;
-	sf::Vector2f getPosition() const;
-	sf::Vector2f getSize() const;
-	std::string getColor() const;
+	virtual sf::Vector2f getPosition() const override;
+	virtual sf::Vector2f getSize() override;
+	virtual sf::Color getColor() const override;
+
+	std::string getPicture() const;
 };
 
 #endif

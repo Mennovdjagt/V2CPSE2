@@ -36,10 +36,14 @@ sf::Vector2f image::getPosition() const {
 	return position;
 }
 
-sf::Vector2f image::getSize() const {
-	return texture.getSize();
+sf::Vector2f image::getSize() {
+	return castToF(texture.getSize());
 }
 
-std::string image::getColor() const {
+sf::Color image::getColor() const {
+	return sf::Color::Red;
+}
+
+std::string image::getPicture() const {
 	return picture;
 }

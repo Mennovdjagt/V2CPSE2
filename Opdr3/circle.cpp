@@ -36,8 +36,8 @@ sf::Vector2f circle::getPosition() const {
 	return position;
 }
 
-float circle::getSize() const {
-	return size;
+sf::Vector2f circle::getSize() {
+	return sf::Vector2f{size, 0};
 }
 
 sf::Color circle::getColor() const{
