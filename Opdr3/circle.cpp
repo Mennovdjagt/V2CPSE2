@@ -43,3 +43,7 @@ sf::Vector2f circle::getSize() {
 sf::Color circle::getColor() const{
 	return color;
 }
+
+std::string circle::getPicture() const {
+	return "";
+}

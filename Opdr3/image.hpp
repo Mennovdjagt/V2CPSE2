@@ -25,7 +25,7 @@ public:
 	virtual sf::Vector2f getSize() override;
 	virtual sf::Color getColor() const override;
 
-	std::string getPicture() const;
+	virtual std::string getPicture() const override;
 };
 
 #endif

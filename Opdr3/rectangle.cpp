@@ -42,3 +42,7 @@ sf::Vector2f rectangle::getSize() {
 sf::Color rectangle::getColor() const{
 	return color;
 }
+
+std::string rectangle::getPicture() const {
+	return "";
+}

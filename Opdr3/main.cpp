@@ -167,7 +167,7 @@ void write( std::ofstream &output, std::vector<drawable *> objects ){
         }else if( name == "RECTANGLE" ){
             output << p->getColor() << " " << p->getSize() <<"\n";  
         }else if( name == "PICTURE" ){
-            output << p->getSize() << "\n";  
+            output << p->getPicture() << "\n";  
         }else if( name == "" ){
           throw end_of_file();
         }
