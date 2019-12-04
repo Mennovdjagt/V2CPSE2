@@ -11,6 +11,7 @@ public:
 	virtual void update(){}
 	virtual bool contains( const sf::Vector2f& object ) const;
 	virtual void newPosition( const sf::Vector2f newPos );
+	virtual std::string getType() const;
 
 	sf::Vector2f castToF( sf::Vector2i target ){
 	return sf::Vector2f(

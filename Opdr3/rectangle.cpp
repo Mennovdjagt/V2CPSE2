@@ -27,6 +27,10 @@ void rectangle::newPosition( const sf::Vector2f newPos ){
 	position = (newPos - sf::Vector2f{size.x / 2, size.y / 2});
 }
 
+std::string rectangle::getType() const{
+	return "RECTANGLE";
+}
+
 sf::Vector2f rectangle::getPosition() const {
 	return position;
 }

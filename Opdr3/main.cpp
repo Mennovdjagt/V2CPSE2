@@ -70,9 +70,7 @@ private:
 };
 
 
-std::istream & operator>>( std::istream & input, sf::Color & rhs ){
-	std::string s;
-   	input >> s;
+std::istream & operator>>( std::istream & output, sf::Color & rhs ){
    	const struct { const char * name; sf::Color color; } colors[]{
        	{ "yellow", sf::Color::Yellow },
        	{ "red",    sf::Color::Red },
@@ -80,9 +78,9 @@ std::istream & operator>>( std::istream & input, sf::Color & rhs ){
     
    	};
    	for( auto const & color : colors ){
-       	if( color.name == s ){ 
-          	rhs = color.color;
-          	return input;
+       	if( color.color == rhs ){ 
+          	output << color.name
+          	return output;
        	}
    	}
    		if( s == "" ){
@@ -91,6 +89,24 @@ std::istream & operator>>( std::istream & input, sf::Color & rhs ){
    		throw unknown_color( s );
 }
 
+std::istream & operator<<( std::istream & output, sf::Color & rhs ){
+    const struct { const char * name; sf::Color color; } colors[]{
+        { "yellow", sf::Color::Yellow },
+        { "red",    sf::Color::Red },
+        { "blue", sf::Color::Blue }
+    
+    };
+    for( auto const & color : colors ){
+        if( color.color == rhs ){ 
+            rhs = color.color;
+            return input;
+        }
+    }
+      if( s == "" ){
+          throw end_of_file();
+      }
+      throw unknown_color( s );
+}
 
 std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	char c;
@@ -106,6 +122,12 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	if( c != ')' ){ throw invalid_position( c ); }
 
    	return input;
+}
+
+std::istream & operator<<( std::istream & output, sf::Vector2f & rhs ){
+    output << "(" << rhs.x << "," << rhs.y << ") ";  
+
+    return input;
 }
 
 drawable* read( std::ifstream & input ){
@@ -136,8 +158,10 @@ drawable* read( std::ifstream & input ){
    throw unknown_shape( name );
 }
 
-void write( std::ofstream &, drawable* objects ){
-	//not done yet
+void write( std::ofstream &output, std::vector<drawable *> objects ){
+    for(auto &p : objects){
+        output << p->getPosition() << p->getType() << " " << p->getColor() << " " << p->getSize() << "\n";  
+    }
 }
 
 
@@ -178,28 +202,13 @@ int main( int argc, char *argv[] ){
 
 		window.clear();
 
-        //int a = 0;
-
-        for( auto & p : object ){
-         	p->draw(window);
-         	/*if(sf::Mouse::isButtonPressed( sf::Mouse::Left )){
-         		bool isPressed = p->contains( p->castToF( sf::Mouse::getPosition(window)));
-         		if(isPressed && !selected){
-         			selected = true;
-         			std::cout << isPressed << std::endl;
-         			block = a;
-         		}else if( !isPressed ){
-         			selected = false;
-         			std::cout << "missed" << std::endl;
-         			//block = -1;
-         		}
-         	}
-         	a++;*/
-     	}
+    for( auto & p : object ){
+        p->draw(window);
+    }
 
 		window.display();
 
-		sf::sleep( sf::milliseconds( 1 ));
+		sf::sleep( sf::milliseconds( 0.001 ));
 
         sf::Event event;		
 	    while( window.pollEvent(event) ){
@@ -208,6 +217,15 @@ int main( int argc, char *argv[] ){
 			}
 		}	
 	}
+
+  {
+    std::ofstream output( "tekst.txt" );
+    try{
+      write(output, object);
+    }catch( std::exception & e ){
+      std::cout << e.what();
+    }
+  }
 
 	std::cout << "Terminating application\n";
 	return 0;

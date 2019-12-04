@@ -28,6 +28,10 @@ void circle::newPosition( const sf::Vector2f newPos ){
 	position = (newPos - sf::Vector2f{size, size});
 }
 
+std::string circle::getType() const{
+	return "CIRCLE";
+}
+
 sf::Vector2f circle::getPosition() const {
 	return position;
 }

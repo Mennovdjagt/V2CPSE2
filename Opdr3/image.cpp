@@ -28,10 +28,18 @@ void image::newPosition( const sf::Vector2f newPos ){
 	position = (newPos - sf::Vector2f(size.x/2, size.y/2));
 }
 
+std::string image::getType() const{
+	return "PICTURE";
+}
+
 sf::Vector2f image::getPosition() const {
 	return position;
 }
 
-std::string image::getPicture() const {
+sf::Vector2f image::getSize() const {
+	return texture.getSize();
+}
+
+std::string image::getColor() const {
 	return picture;
 }

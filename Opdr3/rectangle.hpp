@@ -19,6 +19,7 @@ public:
 	virtual void move( sf::Vector2f delta ) override;
 	virtual bool contains( const sf::Vector2f& object ) const override;
 	virtual void newPosition( const sf::Vector2f newPos ) override;
+	virtual std::string getType() const override;
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
 	sf::Color getColor() const;
