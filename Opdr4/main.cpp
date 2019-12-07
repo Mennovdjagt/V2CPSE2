@@ -10,7 +10,7 @@ int main( int argc, char *argv[] ){
 
   std::string word;                               //buffer to save a word temporary
   std::vector<char> tekst;                        //dynamic array to save all the characters out of the file in
-  std::map<unsigned int, unsigned int> digits;    //to save the amount of digits that will be counted (on key)     
+  std::map<uint, uint> digits;    //to save the amount of digits that will be counted (on key)     
 
   std::ifstream myFile( "tekst.txt" );
 
@@ -32,20 +32,20 @@ int main( int argc, char *argv[] ){
 
   //for_each(tekst.begin(), tekst.end(), [](char&c){ if(std::isdigit(c)){ c = ((int)c + 49); } });                      //changes all the digits to characters
 
-  for( unsigned int i = 0; i < tekst.size(); i++ ){                              //prints the newly changed vector (should be without the digits)
+  for( uint i = 0; i < tekst.size(); i++ ){                                     //prints the newly changed vector (should be without the digits)
       std::cout << tekst.at(i);
   }
 
   std::cout << "\n\n";
 
-  for(uint i = 0; i < 11; i++){                                                 //fills the map with 0's
+  for(uint i = 0; i < 10; i++){                                                 //fills the map with 0's
       digits.insert(std::pair<char,int>( i, 0 ) );
   }            
 
   for( auto p : tekst ){                                                        //loops through all the characters looking for digits to count
       if( std::isdigit(p) ){         
           unsigned int x = digits.at((int)(p-'0'));                             // -'0' is because the char for 0-9 is a different number in the ASCII table
-          digits.at((int)(p-'0')) = x;
+          digits.at((int)(p-'0')) = x+1;
       }
   }
 
