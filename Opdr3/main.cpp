@@ -13,6 +13,7 @@
 #include "drawable.hpp"
 #include "action.hpp"
 #include "image.hpp"
+#include "line.hpp"
 
 
 class unknown_color : public std::exception {
@@ -130,27 +131,29 @@ std::ostream & operator<<( std::ostream & output, sf::Vector2f rhs ){
 }
 
 drawable* read( std::ifstream & input ){
-	sf::Vector2f position;
-	std::string name;
-	sf::Color color;					
-	sf::Vector2f size;
-	std::string sizef;					//sizef is a string that will be converted to a float in circle
-	std::string pic;					//the location of the picture
+	 sf::Vector2f position;
+	 std::string name;
+	 sf::Color color;					
+	 sf::Vector2f size;
+	 std::string sizef;					//sizef is a string that will be converted to a float in circle
+	 std::string pic;					//the location of the picture
 	
 	input >> position >> name;			//only the first 2 are the same with circle's, rectangle's, picture's and line's
 
 	if( name == "CIRCLE" ){
-		input >> color >> sizef;
+		  input >> color >> sizef;
      	return new circle( position, std::stof(sizef), color );		//std::stof(sizef) is a build in function from std::string to convert to a float
 	}
    	if( name == "RECTANGLE" ){
-   		input >> color >> size;
+   		  input >> color >> size;
       	return new rectangle( position, size, color );
    	} else if( name == "PICTURE" ){
-   		input >> pic;
+   		  input >> pic;
       	return new image( pic, position );
-
-   	} else if( name == "" ){
+   	} else if( name == "LINE"){
+        input >> color >> size;
+        return new line( position, size, color );
+    }else if( name == "" ){
       	throw end_of_file();
     }
 
@@ -165,9 +168,11 @@ void write( std::ofstream &output, std::vector<drawable *> objects ){
         if( name == "CIRCLE" ){
             output << p->getColor() << " " << (p->getSize()).x << "\n";  
         }else if( name == "RECTANGLE" ){
-            output << p->getColor() << " " << p->getSize() <<"\n";  
+            output << p->getColor() << " " << p->getSize() << "\n";  
         }else if( name == "PICTURE" ){
             output << p->getPicture() << "\n";  
+        }else if( name == "LINE" ){
+            output << p->getColor() << " " << p->getSize() << "\n";
         }else if( name == "" ){
           throw end_of_file();
         }

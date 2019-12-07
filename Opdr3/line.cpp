@@ -9,15 +9,21 @@ line::line( sf::Vector2f position, sf::Vector2f size, sf::Color color ) :
 {}
 
 void line::draw( sf::RenderWindow & window ) {
-	thinLine[2] = {
-		sf::Vertex(position, color, position),
-		sf::Vertex(size, color, size)
-	}
-	window.draw(thinLine, 2, sf::Lines);
+	sf::Vertex line[] =
+	{
+    	sf::Vertex(sf::Vector2f(10, 10), color),
+    	sf::Vertex(sf::Vector2f(150, 150), color)
+	};
+	window.draw(line, 2, sf::Lines);
 }
 
 void line::move( sf::Vector2f delta ){
 	position += delta;
+}
+
+bool line::contains( const sf::Vector2f& object ) const {
+	//return line.getGlobalBounds().contains( object );
+	return 0;
 }
 
 void line::newPosition( const sf::Vector2f newPos ){
