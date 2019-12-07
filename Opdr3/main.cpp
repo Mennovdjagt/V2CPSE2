@@ -162,7 +162,6 @@ drawable* read( std::ifstream & input ){
 
 void write( std::ofstream &output, std::vector<drawable *> objects ){
     for(auto &p : objects){
-      std::cout << p->getType() << std::endl;
         output << p->getPosition() << p->getType() << " ";
         std::string name = p->getType();
         if( name == "CIRCLE" ){
@@ -175,6 +174,8 @@ void write( std::ofstream &output, std::vector<drawable *> objects ){
             output << p->getColor() << " " << p->getSize() << "\n";
         }else if( name == "" ){
           throw end_of_file();
+        }else{
+          throw unknown_shape( name );
         }
     }
 }
@@ -206,7 +207,7 @@ int main( int argc, char *argv[] ){
 		action( sf::Keyboard::Right, 	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f( +1.0,  0.0 )); } }),
 		action( sf::Keyboard::Up,    	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f(  0.0, -1.0 )); } }),
 		action( sf::Keyboard::Down,  	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f(  0.0, +1.0 )); } }),
-    action( sf::Mouse::Left,      [&](){ for(auto & p : object){ if(p->contains( p->castToF( sf::Mouse::getPosition(window)))){ p->newPosition(p->castToF( sf::Mouse::getPosition(window))); } } }),
+    action( sf::Mouse::Left,      [&](){ for(auto & p : object){ if(p->contains( p->castToF( sf::Mouse::getPosition(window)))){  p->newPosition(p->castToF( sf::Mouse::getPosition(window))); } } }),
 	};
 
 
