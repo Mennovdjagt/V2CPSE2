@@ -9,7 +9,7 @@ int main( int argc, char *argv[] ){
 
   std::string word;                               //buffer to save a word temporary
   std::vector<char> tekst;                        //dynamic array to save all the characters out of the file in
-  std::map<uint, uint> digits;    //to save the amount of digits that will be counted (on key)     
+  std::vector< std::pair<int,char> > vect;        //holds how many times an alphabetical character is counted in the tekst     
 
   std::ifstream myFile( "tekst.txt" );
 
@@ -39,21 +39,23 @@ int main( int argc, char *argv[] ){
       std::cout << tekst.at(i);
   }
 
-  std::cout << "\n\n";
+  std::cout << "\n\n";   
 
-  for(uint i = 0; i < 10; i++){                                                 //fills the map with 0's
-      digits.insert(std::pair<char,int>( i, 0 ) );
-  }            
+  std::string alphabet = "abcdefghijklmnopqrstuvwxyz";                          //string with all the alphabetical letters, as check for the occurance check
 
-  for( auto p : tekst ){                                                        //loops through all the characters looking for digits to count
-      if( std::isdigit(p) ){         
-          unsigned int x = digits.at((int)(p-'0'));                             // -'0' is because the char for 0-9 is a different number in the ASCII table
-          digits.at((int)(p-'0')) = x+1;
-      }
+  for( auto p : alphabet ){                                                     //loops through every letter in the alphabet
+      int count = std::count( tekst.begin(), tekst.end(), p );                  //counts the occurance of a alphabetically char
+      vect.push_back(std::make_pair(count, p));                                 //puts the occurance and the letter in a pair and that in a vector
   }
 
-  for(auto &p : digits){                                                        //print all the numbers with there corresponding amount (not sorted yet)
-      std::cout << p.first << ":" << p.second << std::endl;
+  for( auto p : vect ){                                                         //prints it on alphabetical order
+      std::cout << p.second << " : " << p.first << std::endl;
+  }
+
+  std::sort(vect.begin(), vect.end());                                          //sorts the vector on occurance(less first, biggest last)
+
+  for( auto p : vect ){                                                         //prints the newly ordered vector
+      std::cout << p.second << " : " << p.first << std::endl;
   }
 
 
