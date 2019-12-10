@@ -9,10 +9,12 @@ private:
 	sf::Vector2f position;
 	sf::Vector2f size;
 	sf::Color color;
+	float rotation;
+	sf::RectangleShape lineShape;
 
 public:
 
-	line( sf::Vector2f position, sf::Vector2f size, sf::Color color = sf::Color::Red );
+	line( sf::Vector2f position, sf::Vector2f size, sf::Color color = sf::Color::Red, float rotation = 0 );
 
 	virtual void draw( sf::RenderWindow & window ) override;
 	virtual void move( sf::Vector2f delta ) override;
@@ -24,6 +26,8 @@ public:
 	virtual sf::Color getColor() const override;
 
 	virtual std::string getPicture() const override;
+
+	virtual float getRotation() const override;
 
 };
 

@@ -137,6 +137,7 @@ drawable* read( std::ifstream & input ){
 	 sf::Vector2f size;
 	 std::string sizef;					//sizef is a string that will be converted to a float in circle
 	 std::string pic;					//the location of the picture
+   float rotation = 0;
 	
 	input >> position >> name;			//only the first 2 are the same with circle's, rectangle's, picture's and line's
 
@@ -151,8 +152,8 @@ drawable* read( std::ifstream & input ){
    		  input >> pic;
       	return new image( pic, position );
    	} else if( name == "LINE"){
-        input >> color >> size;
-        return new line( position, size, color );
+        input >> color >> size >> rotation;
+        return new line( position, size, color, rotation );
     }else if( name == "" ){
       	throw end_of_file();
     }
@@ -171,7 +172,7 @@ void write( std::ofstream &output, std::vector<drawable *> objects ){
         }else if( name == "PICTURE" ){
             output << p->getPicture() << "\n";  
         }else if( name == "LINE" ){
-            output << p->getColor() << " " << p->getSize() << "\n";
+            output << p->getColor() << " " << p->getSize() << p->getRotation() << "\n";
         }else if( name == "" ){
           throw end_of_file();
         }else{

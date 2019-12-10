@@ -47,3 +47,7 @@ sf::Color circle::getColor() const{
 std::string circle::getPicture() const {
 	return "";
 }
+
+float circle::getRotation() const {
+	return ball.getRotation();
+}

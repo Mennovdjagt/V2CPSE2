@@ -26,6 +26,8 @@ public:
 	virtual sf::Color getColor() const override;
 
 	virtual std::string getPicture() const override;
+	virtual float getRotation() const override;
+
 };
 
 #endif

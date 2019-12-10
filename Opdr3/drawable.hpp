@@ -16,6 +16,7 @@ public:
 	virtual sf::Vector2f getSize();
 	virtual sf::Color getColor() const;
 	virtual std::string getPicture() const;
+	virtual float getRotation() const;
 
 	sf::Vector2f castToF( sf::Vector2i target ){
 	return sf::Vector2f(

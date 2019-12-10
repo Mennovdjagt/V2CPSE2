@@ -1,4 +1,4 @@
-(312,262) CIRCLE blue 10
-(203,180) RECTANGLE red (30,40) 
-(458,174) PICTURE Dirt_Ball.png
-(20,20) LINE red (50,50) 
+(162,237) CIRCLE blue 10
+(197,331) RECTANGLE red (30,40) 
+(161,293) PICTURE Dirt_Ball.png
+(100,300) LINE red (2,100) 20

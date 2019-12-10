@@ -3,7 +3,6 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <array>
 #include <map>
 
 int main( int argc, char *argv[] ){

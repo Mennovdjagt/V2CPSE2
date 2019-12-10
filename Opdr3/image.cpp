@@ -47,3 +47,7 @@ sf::Color image::getColor() const {
 std::string image::getPicture() const {
 	return picture;
 }
+
+float image::getRotation() const {
+	return sprite.getRotation();
+}

@@ -2,19 +2,19 @@
 #include "line.hpp"
 #include "drawable.hpp"
 
-line::line( sf::Vector2f position, sf::Vector2f size, sf::Color color ) :
+line::line( sf::Vector2f position, sf::Vector2f size, sf::Color color, float rotation ) :
 	position{ position },
 	size{ size },
-	color{ color }
+	color{ color },
+	rotation{ rotation }
 {}
 
 void line::draw( sf::RenderWindow & window ) {
-	sf::Vertex line[] =
-	{
-    	sf::Vertex(sf::Vector2f(10, 10), color),
-    	sf::Vertex(sf::Vector2f(150, 150), color)
-	};
-	window.draw(line, 2, sf::Lines);
+	lineShape.setSize(size);
+	lineShape.setPosition(position);
+	lineShape.setFillColor(color);
+	lineShape.setRotation(rotation);
+	window.draw(lineShape);
 }
 
 void line::move( sf::Vector2f delta ){
@@ -22,12 +22,11 @@ void line::move( sf::Vector2f delta ){
 }
 
 bool line::contains( const sf::Vector2f& object ) const {
-	//return line.getGlobalBounds().contains( object );
-	return 0;
+	return lineShape.getGlobalBounds().contains( object );
 }
 
 void line::newPosition( const sf::Vector2f newPos ){
-	position = (newPos - sf::Vector2f{size.x / 2, size.y / 2});
+	position = newPos;
 }
 
 std::string line::getType() const{
@@ -48,4 +47,8 @@ sf::Color line::getColor() const{
 
 std::string line::getPicture() const {
 	return "";
+}
+
+float line::getRotation() const {
+	return lineShape.getRotation();
 }

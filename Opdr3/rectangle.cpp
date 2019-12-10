@@ -46,3 +46,7 @@ sf::Color rectangle::getColor() const{
 std::string rectangle::getPicture() const {
 	return "";
 }
+
+float rectangle::getRotation() const {
+	return block.getRotation();
+}
