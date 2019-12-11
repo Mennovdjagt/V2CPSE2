@@ -6,6 +6,8 @@
 #include <map>
 #include <unordered_set>
 
+typedef std::pair<std::string, int> pair;
+
 int main( int argc, char *argv[] ){
 
   std::string word;                               //buffer to save a word temporary
@@ -62,28 +64,28 @@ int main( int argc, char *argv[] ){
   }
 
 
-  std::vector<std::string> words;                                   //holds all the words that are in the tekst after changing uppercase to lower and digit to alpha
-  std::unordered_set<std::string> uniqueSet;                        //a list that can only hold unique values (saves the word)  
-  std::string buf = "";                                             //a buffer string that holds multiple char objects, that create a word
+  std::vector<std::string> words;                                     //holds all the words that are in the tekst after changing uppercase to lower and digit to alpha
+  std::vector<std::pair<int, std::string>> bufferVec;                 //a vector that is meant to sort what will be put in the map
+  std::unordered_set<std::string> uniqueSet;                          //a list that can only hold unique values (saves the word)
+  std::map<int, pair, std::greater<int> > occurance;                  //the map where we will save the sorted occurance in
+  std::string buf = "";                                               //a buffer string that holds multiple char objects, that create a word
 
-  //makes from a vector of char's a new vector with words
-  for_each(tekst.begin(), tekst.end(), [&buf, &words](char c){ if(c==' '||c=='\0'){ words.push_back(buf); buf = ""; }else{ buf+=c; } }); 
-  for_each(words.begin(), words.end(), [&uniqueSet](std::string s){ uniqueSet.insert(s); });
-
-  for( auto p : words ){
-      std::cout << p << '\n';
-  }
-
+  for_each(tekst.begin(), tekst.end(), [&buf, &words](char c){ if(c==' '||c=='\0'){ words.push_back(buf); buf = ""; }else{ buf+=c; } });      //makes from a vector of char's a new vector with words
+  for_each(words.begin(), words.end(), [&uniqueSet](std::string s){ uniqueSet.insert(s); });                                                  //puts every word in a uniqueSet (automatically removes duplicates)
 
   std::cout << std::endl;
 
-  std::map<std::string, int> occurance;
+  for_each(uniqueSet.begin(), uniqueSet.end(), [&words, &bufferVec](std::string s){ int count = std::count(words.begin(), words.end(), s); bufferVec.push_back(std::make_pair(count, s)); });
 
-  for_each(uniqueSet.begin(), uniqueSet.end(), [&words, &occurance](std::string s){ occurance[s] = std::count(words.begin(), words.end(), s); });
+  std::sort(bufferVec.begin(), bufferVec.end());
 
+  int tmp = 0;
+  for_each(bufferVec.begin(), bufferVec.end(), [&occurance, &tmp](std::pair<int, std::string> vec){occurance.insert(std::make_pair(tmp, std::make_pair(vec.second, vec.first))); tmp++; });
 
-  for( auto p : occurance ){
-      std::cout << p.first << " " << p.second << '\n';
+  for(int i = occurance.size()-1; i >= ((int)occurance.size() - 10); i--){
+      auto theMap = occurance[i];
+      std::cout << theMap.first << ", " << theMap.second << '\n';
+      //std::cout << i << '\n';
   }
 
 
