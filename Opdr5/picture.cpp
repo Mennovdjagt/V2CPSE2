@@ -17,3 +17,11 @@ void picture::draw( sf::RenderWindow & window ) {
 bool picture::contains( const sf::Vector2f& object ) const {
 	return sprite.getGlobalBounds().contains( object );
 }
+
+void picture::setSprite( bool x ){
+	if(x){
+		image = "cross.png";
+	}else{
+		image = "circle.png";
+	}
+}
