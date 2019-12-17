@@ -18,7 +18,7 @@ public:
 	void draw( sf::RenderWindow & window );
 	bool contains( const sf::Vector2f& object ) const;
 
-	void setSprite( bool x );
+	bool setSprite( bool x );
 
 	sf::Vector2f castToF( sf::Vector2i target ){
 	return sf::Vector2f(

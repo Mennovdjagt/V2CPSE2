@@ -40,7 +40,7 @@ int main( int argc, char *argv[] ){
   }
 
   action actions[] = {
-      action( sf::Mouse::Left,          [&](){ for(auto & p : objects){ if(p->contains( p->castToF( sf::Mouse::getPosition(window))) && mousePressed ){ p->setSprite(crossOrCircle); crossOrCircle ? crossOrCircle = 0 : crossOrCircle = 1; mousePressed = 0;} } }),
+      action( sf::Mouse::Left,          [&](){ for(auto & p : objects){ if(p->contains( p->castToF( sf::Mouse::getPosition(window))) && mousePressed ){ crossOrCircle = p->setSprite(crossOrCircle); mousePressed = 0;} } }),
   };
 
   while (window.isOpen()) {
@@ -68,7 +68,6 @@ int main( int argc, char *argv[] ){
               window.close();
           }else if( event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left ){ 
               mousePressed = 1;
-              std::cout << "hello there" << std::endl;
           }
       }
   }

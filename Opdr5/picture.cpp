@@ -18,10 +18,14 @@ bool picture::contains( const sf::Vector2f& object ) const {
 	return sprite.getGlobalBounds().contains( object );
 }
 
-void picture::setSprite( bool x ){
-	if(x){
-		image = "cross.png";
-	}else{
+bool picture::setSprite( bool x ){
+	if(x && image != "circle.png" && image != "cross.png"){
 		image = "circle.png";
+		return false;
+	}else if(!x && image != "circle.png" && image != "cross.png"){
+		image = "cross.png";
+		return true;
+	}else{
+		return x;
 	}
 }
