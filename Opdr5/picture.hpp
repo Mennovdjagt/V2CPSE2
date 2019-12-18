@@ -8,12 +8,12 @@ class picture{
 private:
 	std::string image;
 	sf::Vector2f position;
-	sf::Vector2f size;
+	uint sortObject;
 	sf::Texture texture;
 	sf::Sprite sprite;
 
 public:
-	picture( std::string image, sf::Vector2f position );
+	picture( std::string image, sf::Vector2f position, uint sortObject );
 
 	void draw( sf::RenderWindow & window );
 	bool contains( const sf::Vector2f& object ) const;
@@ -23,6 +23,8 @@ public:
 	void setSprite( std::string newSprite );
 
 	std::string getSprite();
+
+	uint getSpriteInt();
 
 	sf::Vector2f castToF( sf::Vector2i target ){
 	return sf::Vector2f(
