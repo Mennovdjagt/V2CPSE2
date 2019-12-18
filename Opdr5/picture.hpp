@@ -20,6 +20,10 @@ public:
 
 	bool setSprite( bool x );
 
+	void setSprite( std::string newSprite );
+
+	std::string getSprite();
+
 	sf::Vector2f castToF( sf::Vector2i target ){
 	return sf::Vector2f(
 			static_cast<float>( target.x ),

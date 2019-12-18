@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include "line.hpp"
-#include "drawable.hpp"
 
 line::line( sf::Vector2f position, sf::Vector2f size, sf::Color color, float rotation ) :
 	position{ position },

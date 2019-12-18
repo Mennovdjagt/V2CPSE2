@@ -29,3 +29,11 @@ bool picture::setSprite( bool x ){
 		return x;
 	}
 }
+
+void picture::setSprite( std::string newSprite ){
+	image = newSprite;
+}
+
+std::string picture::getSprite(){
+	return image;
+}
