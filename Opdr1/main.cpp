@@ -65,7 +65,7 @@ int main( int argc, char *argv[] ){
 	block up{ 		sf::Vector2f{ 0.0, 0.0 }, 		sf::Vector2f{ 640.0, 10.0 }, sf::Color{255, 0, 0} };
 	block down{ 	sf::Vector2f{ 0.0, 470.0 }, 	sf::Vector2f{ 640.0, 10.0 }, sf::Color{255, 0, 0} };
 
-	std::array< drawable *, 5 > objects = { &my_ball, &left, &right, &up, &down };
+	std::array< drawable *, 6 > objects = { &my_block, &my_ball, &left, &right, &up, &down };
 
 	action actions[] = {
 		action( sf::Keyboard::Left,  	[&](){ my_block.move( sf::Vector2f( -1.0,  0.0 )); }),
@@ -74,10 +74,10 @@ int main( int argc, char *argv[] ){
 		action( sf::Keyboard::Down,  	[&](){ my_block.move( sf::Vector2f(  0.0, +1.0 )); }),
 
 		action( [&](){ my_ball.update(); }),
-		action( [&](){ return my_ball.intersects( left.getGlobalBounds() 	 ); }, [&](){ my_ball.overlaps( left.getGlobalBounds()	 ); }),
-		action( [&](){ return my_ball.intersects( right.getGlobalBounds() 	 ); }, [&](){ my_ball.overlaps( right.getGlobalBounds() 	 ); }),
-		action( [&](){ return my_ball.intersects( up.getGlobalBounds() 		 ); }, [&](){ my_ball.overlaps( up.getGlobalBounds()		 ); }),
-		action( [&](){ return my_ball.intersects( down.getGlobalBounds() 	 ); }, [&](){ my_ball.overlaps( down.getGlobalBounds()	 ); }),
+		action( [&](){ return my_ball.intersects( left.getGlobalBounds() 	 ); }, [&](){ my_ball.overlaps( left.getGlobalBounds()	   ); }),
+		action( [&](){ return my_ball.intersects( right.getGlobalBounds() 	 ); }, [&](){ my_ball.overlaps( right.getGlobalBounds()    ); }),
+		action( [&](){ return my_ball.intersects( up.getGlobalBounds() 		 ); }, [&](){ my_ball.overlaps( up.getGlobalBounds()	   ); }),
+		action( [&](){ return my_ball.intersects( down.getGlobalBounds() 	 ); }, [&](){ my_ball.overlaps( down.getGlobalBounds()	   ); }),
 		action( [&](){ return my_ball.intersects( my_block.getGlobalBounds() ); }, [&](){ my_ball.overlaps( my_block.getGlobalBounds() ); })
 	};
 
@@ -91,8 +91,6 @@ int main( int argc, char *argv[] ){
 		for( auto & p : objects ){
          	p->draw( window );
         }
-
-        my_block.draw( window );
 
 		window.display();
 
