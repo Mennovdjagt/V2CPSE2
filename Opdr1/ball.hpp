@@ -22,15 +22,11 @@ public:
 
 	virtual void update() override;
 
-	void move( sf::Vector2f delta );
-
 	bool intersects( const sf::FloatRect& object) const;
 
 	void newDirection( sf::Vector2f delta );
 
-	bool within( int x, int a, int b );
-
-	sf::Vector2f overlaps( const sf::FloatRect other, drawable * object);
+	void overlaps( const sf::FloatRect other );
 };
 
 #endif
