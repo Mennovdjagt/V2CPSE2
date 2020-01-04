@@ -9,6 +9,7 @@ private:
 	sf::Vector2f position;
 	float size;
 	sf::Color color;
+	sf::Vector2f location;				//the left corner above
 
 	sf::Vector2f speed = { -1, 1};
 	sf::CircleShape circle;
@@ -29,7 +30,7 @@ public:
 
 	bool within( int x, int a, int b );
 
-	sf::Vector2f overlaps( const sf::FloatRect other );
+	sf::Vector2f overlaps( const sf::FloatRect other, drawable * object);
 };
 
 #endif
