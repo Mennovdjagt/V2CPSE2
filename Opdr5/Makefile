@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := picture.cpp undo.cpp
+SOURCES := picture.cpp command.cpp
 
 # header files in this project
-HEADERS := picture.hpp undo.hpp action.hpp
+HEADERS := picture.hpp command.hpp action.hpp
 
 # other places to look for files for this project
 SEARCH  := 

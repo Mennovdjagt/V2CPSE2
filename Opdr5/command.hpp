@@ -1,22 +1,21 @@
-#ifndef _UNDO_HPP
-#define _UNDO_HPP
+#ifndef _COMMAND_HPP
+#define _COMMAND_HPP
 
 #include <string>
 #include "picture.hpp"
 
-class undo{
+class command{
 private:
 	picture* pic;
 	std::string image;
-	bool currentPic;
 	std::string imageBefore = "";
 
 public:
-	undo(picture* pic);
+	command( picture* pic, std::string image );
 
-	bool execute( bool currentPic );
+	void execute();
 
-	void back();
+	void undo();
 
 };
 
