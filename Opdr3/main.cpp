@@ -6,6 +6,7 @@
 #include <exception>
 #include <memory>
 #include <vector>
+#include <sstream>
 
 #include <SFML/Graphics.hpp>
 #include "rectangle.hpp"
@@ -43,8 +44,8 @@ private:
 
 class invalid_position : public std::exception {
 public:
-	invalid_position( const char & c):
-		s{ std::string{ "invalid_position [" } + c + "]" }
+	invalid_position( const char & c, const char & a):
+		s{ std::string{ "missing a [\'" } + c + "\'] instead got a [\'" + a + "\'] "}
 	{}
 
 	const char * what() const noexcept {
@@ -59,7 +60,7 @@ private:
 class unknown_shape : public std::exception {
 public:
 	unknown_shape( const std::string & s ):
-		s{ std::string{ "unknown shape [" } + s + "]" }
+		s{ std::string{ "unknown shape [" } + s + "] " }
 	{}
 
 	const char * what() const noexcept {
@@ -110,15 +111,16 @@ std::ostream & operator<<( std::ostream & output, sf::Color rhs ){
 std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	char c;
    	if( ! ( input >> c )){ throw end_of_file(); }
-   	if( c != '(' ){ throw invalid_position( c ); }
+   	if( c != '(' ){ throw invalid_position( '(', c ); }
 
    	if( ! ( input >> rhs.x )){ }
 
    	if( ! ( input >> c )){ }
+    if(c != ',' ){ throw invalid_position( ',', c ); }
    	if( ! ( input >> rhs.y )){ }
 
    	if( ! ( input >> c )){ }
-   	if( c != ')' ){ throw invalid_position( c ); }
+   	if( c != ')' ){ throw invalid_position( ')', c ); }
 
    	return input;
 }
@@ -130,7 +132,7 @@ std::ostream & operator<<( std::ostream & output, sf::Vector2f rhs ){
     return output;
 }
 
-drawable* read( std::ifstream & input ){
+drawable* read( std::istream & input ){
 	 sf::Vector2f position;
 	 std::string name;
 	 sf::Color color;					
@@ -161,8 +163,7 @@ drawable* read( std::ifstream & input ){
    throw unknown_shape( name );
 }
 
-void write( std::ofstream &output, std::vector<drawable *> objects ){
-    for(auto &p : objects){
+void write( std::ofstream &output, drawable * p ){
         output << p->getPosition() << p->getType() << " ";
         std::string name = p->getType();
         if( name == "CIRCLE" ){
@@ -178,7 +179,7 @@ void write( std::ofstream &output, std::vector<drawable *> objects ){
         }else{
           throw unknown_shape( name );
         }
-    }
+    //}
 }
 
 
@@ -191,17 +192,18 @@ int main( int argc, char *argv[] ){
 
 	{
 		std::ifstream input( "tekst.txt" );
+    std::string s;
+    while(std::getline(input, s)){
 		try{
-			for(;;){
-				object.push_back(read( input ));
-			}
+        std::istringstream iss(s);
+				object.push_back(read( iss ));
 		}catch( std::exception & e ){
 			std::cout << e.what();
 		}
 	}
+}
 
 	int block = -1;
-	//bool selected = 0;
 
 	action actions[] = {
 		action( sf::Keyboard::Left,  	[&](){ if(block >= 0){ object.at(block)->move( sf::Vector2f( -1.0,  0.0 )); } }),
@@ -227,22 +229,28 @@ int main( int argc, char *argv[] ){
 
 		sf::sleep( sf::milliseconds( 0.001 ));
 
-        sf::Event event;		
+      sf::Event event;		
 	    while( window.pollEvent(event) ){
-			if( event.type == sf::Event::Closed ){
-				window.close();
-			}
-		}	
+			   if( event.type == sf::Event::Closed ){
+				    window.close();
+			   }
+		  }	
 	}
 
-  {
-    std::ofstream output( "tekst.txt" );
-    try{
-      write(output, object);
-    }catch( std::exception & e ){
-      std::cout << e.what();
-    }
+  std::ofstream ofs;
+  ofs.open("tekst.txt", std::ofstream::out | std::ofstream::trunc);
+  ofs.close();
+
+  for(auto &p : object){
+    {
+      std::ofstream output( "tekst.txt", std::ios_base::app );
+      try{
+        write(output, p);
+      }catch( std::exception & e ){
+        std::cout << e.what();
+      }
   }
+}
 
 	std::cout << "Terminating application\n";
 	return 0;
