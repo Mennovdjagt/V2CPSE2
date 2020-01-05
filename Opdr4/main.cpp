@@ -34,7 +34,7 @@ int main( int argc, char *argv[] ){
   std::cout << "aantal hoofdletters: \t"  << std::count_if(tekst.begin(), tekst.end(), [](char c){ return std::isupper(c); }) << '\n';                //counts the characters if they are uppercase
   std::cout << "aantal cijfers: \t"       << std::count_if(tekst.begin(), tekst.end(), [](char c){ return std::isdigit(c); }) << "\n\n";              //counts all the digits
 
-  for_each(tekst.begin(), tekst.end(), [](char&c){ if(std::isdigit(c)){ c = ((int)c + 49); } });                                                      //changes all the digits to characters
+  //for_each(tekst.begin(), tekst.end(), [](char&c){ if(std::isdigit(c)){ c = ((int)c + 49); } });                                                      //changes all the digits to characters
 
   for_each(tekst.begin(), tekst.end(), [](char&c){ if(std::isupper(c)){ c = std::tolower(c); } }); 
 
