@@ -16,6 +16,10 @@ void circle::draw( sf::RenderWindow & window ) {
 	window.draw(ball);
 }
 
+void circle::writeToFile( std::ofstream &output ){
+	output << getColor() << " " << getSize() << "\n"; 
+}
+
 void circle::move( sf::Vector2f delta ){
 	position += delta;
 }
@@ -32,16 +36,27 @@ std::string circle::getType() const{
 	return "CIRCLE";
 }
 
-sf::Vector2f circle::getPosition() const {
-	return position;
+std::string circle::getPosition() const {
+	return "(" + std::to_string(position.x) + "," + std::to_string(position.y) + ") ";
 }
 
-sf::Vector2f circle::getSize() {
-	return sf::Vector2f{size, 0};
+std::string circle::getSize() {
+	return std::to_string(size);
 }
 
-sf::Color circle::getColor() const{
-	return color;
+std::string circle::getColor(){
+	const struct { const char * name; sf::Color color; } colors[]{
+        	{ "yellow", sf::Color::Yellow },
+        	{ "red",    sf::Color::Red },
+        	{ "blue", sf::Color::Blue }
+    
+    };
+    for( auto const & colour : colors ){
+        if( colour.color == color ){ 
+            return std::string{colour.name};
+        }
+    }
+    return "red";
 }
 
 std::string circle::getPicture() const {

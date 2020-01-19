@@ -15,6 +15,10 @@ void rectangle::draw( sf::RenderWindow & window ) {
 	window.draw(block);
 }
 
+void rectangle::writeToFile( std::ofstream &output ){
+	output << getColor() << " " << getSize() << "\n";  
+}
+
 void rectangle::move( sf::Vector2f delta ){
 	position += delta;
 }
@@ -31,16 +35,27 @@ std::string rectangle::getType() const{
 	return "RECTANGLE";
 }
 
-sf::Vector2f rectangle::getPosition() const {
-	return position;
+std::string rectangle::getPosition() const {
+	return "(" + std::to_string(position.x) + "," + std::to_string(position.y) + ") ";
 }
 
-sf::Vector2f rectangle::getSize() {
-	return size;
+std::string rectangle::getSize() {
+	return "(" + std::to_string(size.x) + "," + std::to_string(size.y) + ") " ;
 }
 
-sf::Color rectangle::getColor() const{
-	return color;
+std::string rectangle::getColor() {
+	const struct { const char * name; sf::Color color; } colors[]{
+        	{ "yellow", sf::Color::Yellow },
+        	{ "red",    sf::Color::Red },
+        	{ "blue", sf::Color::Blue }
+    
+    };
+    for( auto const & colour : colors ){
+        if( colour.color == color ){ 
+            return std::string{colour.name};
+        }
+    }
+    return "red";
 }
 
 std::string rectangle::getPicture() const {

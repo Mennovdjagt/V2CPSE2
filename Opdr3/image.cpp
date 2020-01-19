@@ -15,6 +15,10 @@ void image::draw( sf::RenderWindow & window ) {
 	window.draw(sprite);
 }
 
+void image::writeToFile( std::ofstream &output ){
+	output << getPicture() << "\n"; 
+}
+
 void image::move( sf::Vector2f delta ){
 	position += delta;
 }
@@ -32,16 +36,17 @@ std::string image::getType() const{
 	return "PICTURE";
 }
 
-sf::Vector2f image::getPosition() const {
-	return position;
+std::string image::getPosition() const {
+	return "(" + std::to_string(position.x) + "," + std::to_string(position.y) + ") ";
 }
 
-sf::Vector2f image::getSize() {
-	return castToF(texture.getSize());
+std::string image::getSize() {
+	sf::Vector2f object_size = castToF(texture.getSize());
+	return "(" + std::to_string(object_size.x) + "," + std::to_string(object_size.y) + ") " ;
 }
 
-sf::Color image::getColor() const {
-	return sf::Color::Red;
+std::string image::getColor(){
+    return "red";
 }
 
 std::string image::getPicture() const {

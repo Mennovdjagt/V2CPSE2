@@ -178,26 +178,6 @@ drawable* read( std::istream & input ){
    throw unknown_shape( name );
 }
 
-void write( std::ofstream &output, drawable * p ){
-        output << p->getPosition() << p->getType() << " ";
-        std::string name = p->getType();
-        if( name == "CIRCLE" ){
-            output << p->getColor() << " " << (p->getSize()).x << "\n";  
-        }else if( name == "RECTANGLE" ){
-            output << p->getColor() << " " << p->getSize() << "\n";  
-        }else if( name == "PICTURE" ){
-            output << p->getPicture() << "\n";  
-        }else if( name == "LINE" ){
-            output << p->getColor() << " " << p->getSize() << p->getRotation() << "\n";
-        }else if( name == "" ){
-          throw end_of_file();
-        }else{
-          throw unknown_shape( name );
-        }
-    //}
-}
-
-
 int main( int argc, char *argv[] ){
 	std::cout << "Starting application 01-05 array of actions\n";
 
@@ -269,7 +249,9 @@ int main( int argc, char *argv[] ){
         if(bad_objects.find(counter) != bad_objects.end()){
           output << bad_objects[counter] << "\n";
         }
-        write(output, p);
+        output << p->getPosition() << p->getType() << " ";
+        p->writeToFile( output );
+        
       }catch( std::exception & e ){
         std::cout << e.what();
       }
