@@ -38,9 +38,9 @@ int main( int argc, char *argv[] ){
 
   for_each(tekst.begin(), tekst.end(), [](char&c){ if(std::isupper(c)){ c = std::tolower(c); } }); 
 
-  for( uint i = 0; i < tekst.size(); i++ ){                                     //prints the newly changed vector (should be without the digits)
+  /*for( uint i = 0; i < tekst.size(); i++ ){                                     //prints the newly changed vector (should be without the digits)
       std::cout << tekst.at(i);
-  }
+  }*/
 
   std::cout << "\n\n";   
 

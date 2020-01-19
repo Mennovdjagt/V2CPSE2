@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include <sstream>
+#include <map>
 
 #include <SFML/Graphics.hpp>
 #include "rectangle.hpp"
@@ -54,6 +55,20 @@ public:
 
 private:
 	std::string s;
+};
+
+class invalid_as : public std::exception {
+public:
+  invalid_as( const char & c):
+    s{ std::string{ "missing " } + c + "-as " } 
+  {}
+
+  const char * what() const noexcept {
+      return s.c_str();
+   }
+
+private:
+  std::string s;
 };
 
 
@@ -113,11 +128,11 @@ std::istream & operator>>( std::istream & input, sf::Vector2f & rhs ){
    	if( ! ( input >> c )){ throw end_of_file(); }
    	if( c != '(' ){ throw invalid_position( '(', c ); }
 
-   	if( ! ( input >> rhs.x )){ }
+   	if( ! ( input >> rhs.x )){ throw invalid_as( 'x' ); }
 
    	if( ! ( input >> c )){ }
     if(c != ',' ){ throw invalid_position( ',', c ); }
-   	if( ! ( input >> rhs.y )){ }
+   	if( ! ( input >> rhs.y )){ throw invalid_as( 'y' ); }
 
    	if( ! ( input >> c )){ }
    	if( c != ')' ){ throw invalid_position( ')', c ); }
@@ -189,17 +204,21 @@ int main( int argc, char *argv[] ){
 	sf::RenderWindow window{ sf::VideoMode{ 640, 480 }, "SFML window" };
 
 	std::vector<drawable *> object;
+  std::map<uint, std::string> bad_objects;
 
 	{
 		std::ifstream input( "tekst.txt" );
     std::string s;
+    uint count = 0;
     while(std::getline(input, s)){
 		try{
         std::istringstream iss(s);
 				object.push_back(read( iss ));
 		}catch( std::exception & e ){
 			std::cout << e.what();
+      bad_objects[count] = s;
 		}
+    count++;
 	}
 }
 
@@ -241,14 +260,20 @@ int main( int argc, char *argv[] ){
   ofs.open("tekst.txt", std::ofstream::out | std::ofstream::trunc);
   ofs.close();
 
+
+  uint counter = 0;
   for(auto &p : object){
     {
       std::ofstream output( "tekst.txt", std::ios_base::app );
       try{
+        if(bad_objects.find(counter) != bad_objects.end()){
+          output << bad_objects[counter] << "\n";
+        }
         write(output, p);
       }catch( std::exception & e ){
         std::cout << e.what();
       }
+      counter++;
   }
 }
 
